@@ -34,4 +34,15 @@ Move-Item "nvim/Neovim" "~/Documents/tools"
 Remove-Item -Path "nvim.zip"
 Remove-Item -Path "nvim" -Recurse -Force
 
+Write-Host "Adding Neovim to Env Path"
 $Env:Path += ";" + $Env:USERPROFILE + "\\Documents\\tools\\Neovim\\bin"
+
+
+Write-Host "Installing Rust + Cargo..."
+Invoke-WebRequest https://win.rustup.rs/x86_64 -OutFile rustup-init.exe
+./rustup-init.exe
+Write-Host "Rust and cargo installed."
+
+Write-Host "Installing starship..."
+cargo install starship
+Write-Host "Starship installed."
