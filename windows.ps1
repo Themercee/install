@@ -15,8 +15,13 @@ param(
 # Global Config
 $Global:ProgressPreference = "SilentlyContinue"
 
+
+Write-Host "Going to install Powershell Core..."
+winget  install Microsoft.Powershell
+Write-Host "Powershell Installed."
+
 Write-Host "Going to install VS Code..."
-#winget install vscode
+winget install vscode
 Write-Host "VS Code installed."
 
 
@@ -31,7 +36,7 @@ if ($toolsFolderExist -ne $True ) {
 
 Write-Host "Going to install Neovim..."
 Invoke-WebRequest https://github.com/neovim/neovim/releases/download/v0.4.4/nvim-win64.zip -OutFile nvim.zip
-Expand-Archive -Path nvim.zip -DestinationPath nvim -
+Expand-Archive -Path nvim.zip -DestinationPath nvim
 
 Move-Item "nvim/Neovim" "~/Documents/tools"
 Remove-Item -Path "nvim.zip"
@@ -57,7 +62,22 @@ try {
 
     Write-Host "Installing starship..."
     cargo install starship
-    Write-Host "Starship installed."
+    # install nerd font
+    # Todo
+    Invoke-WebRequest https://github.com/ryanoasis/nerd-fonts/releases/download/v2.1.0/FiraCode.zip -OutFile FiraCode.zip
+    Expand-Archive -Path "./FiraCode.zip"
+    Remove-Item "FiraCode.zip"
+    Write-Host "Starship installed. Don't forget to install the FiraCode Font"
+
+    # Add starship init to powershell profile
+    $powershellProfile = $env:USERPROFILE + "\\Documents\\PowerShell\\Microsoft.PowerShell_profile.ps1"
+    $pwshProfileExist = Test-Path $powershellProfile
+    if ($pwshProfileExist -ne $True ) {
+        mkdir -Path $env:USERPROFILE"\\Documents\\PowerShell"
+        New-Item $powershellProfile
+    }
+
+    Add-Content -Path $powershellProfile -Value "Invoke-Expression (&starship init powershell)"
 }
 catch {
     Write-Error "[!] An error occured. Cargo not installed."
