@@ -19,3 +19,18 @@ Restart the service with admin powershell
 ```powershell
 Restart-Service LxssManager
 ```
+
+## AWS
+
+```bash
+sudo apt install unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+aws configure
+
+# Add this to ~/.profile: export PATH=/usr/local/bin:$PATH
+
+# Add this to .bashrc: complete -C '/usr/local/bin/aws_completer' aws
+```
